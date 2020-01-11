@@ -11,17 +11,37 @@ import com.bolsadeideas.spring.boot.backend.apirest.models.entity.Cliente;
 
 //Anotar como Service para marcarla como una clase de Servicio
 @Service
-public class ClienteServiceImpl implements IClienteService{
+public class ClienteServiceImpl implements IClienteService {
 
-	//Inyectar (Inyección de dependdencias) el ClienteDao
+	// Inyectar (Inyección de dependdencias) el ClienteDao
 	@Autowired
 	private IClienteDao clienteDao;
-	
+
 	@Override
-	@Transactional(readOnly = true) //Permite manejar transacción en el método y como es un Select será sólo de lectura
+	@Transactional(readOnly = true) // Permite manejar transacción en el método y como es un Select será sólo de
+									// lectura
 	public List<Cliente> findAll() {
-		//Como findAll() retorna un Iterable le hacemos un CAST
+		// Como findAll() retorna un Iterable le hacemos un CAST
 		return (List<Cliente>) clienteDao.findAll();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Cliente findById(Long id) {
+		return clienteDao.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public Cliente save(Cliente cliente) {
+		return clienteDao.save(cliente);
+	}
+
+	@Override
+	@Transactional
+	public void delete(Long id) {
+		clienteDao.deleteById(id);
+
 	}
 
 }
